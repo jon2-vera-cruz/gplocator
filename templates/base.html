@@ -7,32 +7,30 @@
         integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
-    <!--link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"--> 
     <link rel="icon" href="data:;base64,=">
     {% block styles %}
     {% endblock %}
-    <title>Task Manager</title>
+    <title>GP Locator</title>
 </head>
 <body>
-
-	<header class="masthead" style="background-image: url('https://thumbs.dreamstime.com/b/hands-medical-doctor-over-blue-background-31414439.jpg');">
+	<header>
         <!-- top navbar -->
 		<nav class="nav-extended text-shadow light-blue darken-1">
 			<div class="nav-wrapper">
-				<a href="{{ url_for('get_tasks') }}" class="brand-logo">Task Manager</a>
+				<a href="{{ url_for('get_clinics') }}" class="brand-logo">GP Locator</a>
 				<a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
 				<ul class="right hide-on-med-and-down">
-					<li><a href="{{ url_for('get_tasks') }}">Home</a></li>
+					<li><a href="{{ url_for('get_clinics') }}">Home</a></li>
                     {% if session.user %}
-                        <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-                        <li><a href="{{ url_for('add_task') }}">New Task</a></li>
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="#">New Task</a></li>
                         {% if session.user|lower == "admin"|lower %}
-                            <li><a href="{{ url_for('get_categories') }}">Manage Categories</a></li>
+                            <li><a href="#">Manage Clinics</a></li>
                         {% endif %}
-                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                        <li><a href="#">Log Out</a></li>
                     {% else %}
-                        <li><a href="{{ url_for('login') }}">Log In</a></li>
-                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        <li><a href="#">Log In</a></li>
+                        <li><a href="#">Register</a></li>
                     {% endif %}
 				</ul>
 			</div>
@@ -41,17 +39,17 @@
         <!-- mobile sidenav -->
 		<ul class="sidenav" id="mobile-demo">
             <li><h4 class="center-align light-blue-text text-darken 4">Task Manager</h4></li>
-            <li><a href="{{ url_for('get_tasks') }}">Home</a></li>
+            <li><a href="{{ url_for('get_clinics') }}">Home</a></li>
             {% if session.user %}
-                <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
-                <li><a href="{{ url_for('add_task') }}">New Task</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">New Task</a></li>
                 {% if session.user|lower == "admin"|lower %}
-                    <li><a href="{{ url_for('get_categories') }}">Manage Categories</a></li>
+                    <li><a href="#">Manage Clinics</a></li>
                 {% endif %}
-                <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                <li><a href="#">Log Out</a></li>
             {% else %}
-                <li><a href="{{ url_for('login') }}">Log In</a></li>
-                <li><a href="{{ url_for('register') }}">Register</a></li>
+                <li><a href="#">Log In</a></li>
+                <li><a href="#">Register</a></li>
             {% endif %}
 		</ul>
 	</header>
@@ -78,6 +76,53 @@
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzyKmVzYGdsggCfIAYgVvmgqQ_znZnmWo&callback=initMap&libraries=&v=weekly" async></script>
+    <script type="text/javascript">
+    var geocoder;
+    var map;
+    var address ="San Diego, CA";
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var myOptions = {
+        zoom: 8,
+        center: latlng,
+        mapTypeControl: true,
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
+        navigationControl: true,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        if (geocoder) {
+        geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+            if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+            map.setCenter(results[0].geometry.location);
+
+                var infowindow = new google.maps.InfoWindow(
+                    { content: '<b>'+address+'</b>',
+                    size: new google.maps.Size(150,50)
+                    });
+        
+                var marker = new google.maps.Marker({
+                    position: results[0].geometry.location,
+                    map: map, 
+                    title:address
+                }); 
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map,marker);
+                });
+
+            } else {
+                alert("No results found");
+            }
+            } else {
+            alert("Geocode was not successful for the following reason: " + status);
+            }
+        });
+        }
+    }
+    </script>
     {% block scripts %}
     {% endblock %}
 </body>
