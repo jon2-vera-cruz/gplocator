@@ -22,17 +22,18 @@
     </div>
 
     <div id="map">Map</div>
-    <div id="clinic">Clinics</div>
-    <div id="lat">Latitude</div>
-    <div id="lon">Longtitude</div>
-    <div id="add1">Address 1</div>
-    <div id="add2">Address 2</div>
+    <div id="demo">Map</div>
+
+    {% if clinics|length > 0 %}
+        {% for clinic in clinics %}
+            <!-- x.innerHTML = "This is me!"; -->
+        {% endfor %}
+    {% else %}
+        <h3 class="red-text text-darken-4 center-align">No Results Found</h3>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
     <script>
-        var x = document.getElementById("clinic");
-        var y = document.getElementById("lat");
-        var z = document.getElementById("lon");
-        var a = document.getElementById("add1");
-        var b = document.getElementById("add2");
         var mymap
         var popup = L.popup();
 
@@ -79,37 +80,6 @@
                 tileSize: 512,
                 zoomOffset: -1
             }).addTo(mymap);
-            
-            // L.mapbox.featureLayer({{clinic_locations|safe}}).addTo(mymap);
-            x.innerHTML = "{{ clinics }}"
-            {% if clinics|length > 0 %}
-                {% for clinic in clinics %}
-                    y.innerHTML = {{ clinic['latitude'] }}
-                    z.innerHTML = {{ clinic['longtitude'] }}
-                    // a.innerHTML = {{ clinic['county'] }}
-                    // b.innerHTML = {{ clinic['longtitude'] }}
-                    L.marker([{{clinic.latitude}}, {{clinic.longtitude}}], { icon: redIcon }).addTo(mymap)
-                 {% endfor %}
-            {% else %}
-                <h3 class="red-text text-darken-4 center-align">No Results Found</h3>
-            {% endif %}
-
-            // clinics = JSON.parse("{{ clinics }}")
-            // x.innerHTML = clinics.content
-            // x.innerHTML = clinics.length
-            // y.innerHTML = clinics[]
-            // for (var i = 0, i in clinics, i++) {
-            //     y.innerHTML = clinic[i]
-            // }
-
-            // clinics = "{{ clinics.clinic_name }}";
-            // y.innerHTML = clinics
-            // myclinics = jQuery.parseJSON(clinics);
-            
-            // for (var i = 0; i < clinics.length; ++i) {
-            //     y.innerHTML = clinics[0]
-            // }
-
 
             L.marker([53.39172, -6.27659], { icon: redIcon }).addTo(mymap)
                 .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
@@ -124,6 +94,7 @@
             L.marker([latitude, longitude], { icon: redIcon }).addTo(mymap)
                 .bindPopup(clinicinfo)
                 .openPopup();
+            x.innerHTML = "Successful Call";
         }
 
         function onMapClick(e) {
@@ -152,17 +123,4 @@
         }
         }
     </script>
-    {% if clinics|length > 0 %}
-        {% for clinic in clinics %}
-            {{ clinic.latitude }}
-            {{ clinic.longtitude }}
-            {{ clinic.clinicname }}
-            {{ clinic.address_1 }}
-            {{ clinic.address_2 }}
-            {{ clinic.locality }}
-            {{ clinic.town_district }}
-        {% endfor %}
-    {% else %}
-        <h3 class="red-text text-darken-4 center-align">No Results Found</h3>
-    {% endif %}
 {% endblock %}

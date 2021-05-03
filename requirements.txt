@@ -1,0 +1,15 @@
+branca==0.4.2
+click==7.1.2
+dnspython==2.1.0
+Flask==1.1.2
+Flask-PyMongo==2.3.0
+geojson==2.5.0
+ipywidgets==7.6.3
+itsdangerous==1.1.0
+jupyterlab-widgets==1.0.0
+pymongo==3.11.3
+python-bond==1.4
+Shapely==1.7.1
+traittypes==0.2.1
+Werkzeug==1.0.1
+widgetsnbextension==3.5.1

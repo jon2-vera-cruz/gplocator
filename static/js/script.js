@@ -41,75 +41,95 @@ $(document).ready(function(){
     }
 });
 
-// Initialize and add the map
-function initMap() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+// var x = document.getElementById("demo");
+// var mymap
+// var popup = L.popup();
 
-function showPosition(position) {
-    var greenIcon = new L.Icon({
-        iconUrl: '../img/marker-icon-2x-green.png',
-        shadowUrl: '../img/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
+// // Initialize and add the map
+// function initMap() {
+//     if (navigator.geolocation) {
+//         navigator.geolocation.getCurrentPosition(showPosition, showError);
+//     } else {
+//         x.innerHTML = "Geolocation is not supported by this browser.";
+//     }
+// }
 
-    var redIcon = new L.Icon({
-        iconUrl: '../img/marker-icon-2x-red.png',
-        shadowUrl: '../img/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
-    });
-  myposition = { lat: position.coords.latitude, lng: position.coords.longitude };
-  // The map, centered at my position
-  var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+// function showPosition(position) {
+//     var greenIcon = new L.Icon({
+//         iconUrl: '../../static/img/marker-icon-green.png',
+//         shadowUrl: '../../static/img/marker-shadow.png',
+//         iconSize: [25, 41],
+//         iconAnchor: [12, 41],
+//         popupAnchor: [1, -34],
+//         shadowSize: [41, 41]
+//     });
 
-    L.marker([position.coords.latitude, position.coords.longitude], {icon: greenIcon}).addTo(map)
-        .bindPopup('You are here!')
-        .openPopup();
+//     var redIcon = new L.Icon({
+//         iconUrl: '../../static/img/marker-icon-red.png',
+//         shadowUrl: '../../static/img/marker-shadow.png',
+//         iconSize: [25, 41],
+//         iconAnchor: [12, 41],
+//         popupAnchor: [1, -34],
+//         shadowSize: [41, 41]
+//     });
 
-    L.marker([53.39172, -6.27654], {icon: redIcon}).addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+//     // The map, centered at my position
+//     myposition = { lat: position.coords.latitude, lng: position.coords.longitude };
+//     mymap = L.map('map').setView([position.coords.latitude, position.coords.longitude], 15);
+//     // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//     // }).addTo(mymap);
+
+// 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiam9uMi12ZXJhLWNydXoiLCJhIjoiY2tvNXlzMHBoMGtlMjJ2bnpjNjBoeWR0aSJ9.knP7IBbLyCl5RKHUJlaOIg', {
+// 		maxZoom: 18,
+// 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+// 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+// 		id: 'mapbox/streets-v11',
+// 		tileSize: 512,
+// 		zoomOffset: -1
+// 	}).addTo(mymap);
+
+//     L.marker([53.39172, -6.27659], { icon: redIcon }).addTo(mymap)
+//         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+//         .openPopup();
         
-    // position: { lat: 53.39172, lng: -6.27654 },
-}
+//     L.marker([position.coords.latitude, position.coords.longitude], { icon: greenIcon }).addTo(mymap)
+//         .bindPopup('You are here!')
+//         .openPopup();
+// }
 
-function showError(error) {
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      x.innerHTML = "User denied the request for Geolocation."
-      break;
-    case error.POSITION_UNAVAILABLE:
-      x.innerHTML = "Location information is unavailable."
-      break;
-    case error.TIMEOUT:
-      x.innerHTML = "The request to get user location timed out."
-      break;
-    case error.UNKNOWN_ERROR:
-      x.innerHTML = "An unknown error occurred."
-      break;
-  }
-}
+// function addMarker(latitude, longitude, clinicinfo) {
+//     L.marker([latitude, longitude], { icon: redIcon }).addTo(mymap)
+//         .bindPopup(clinicinfo)
+//         .openPopup();
+//     x.innerHTML = "Successful Call";
+// }
 
-var popup = L.popup();
+// function onMapClick(e) {
+//     popup
+//         .setLatLng(e.latlng)
+//         .setContent("You clicked the map at " + e.latlng.toString())
+//         .openOn(mymap);
+// }
 
-function onMapClick(e) {
-    popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(mymap);
-}
+// mymap.on('click', onMapClick);
 
-mymap.on('click', onMapClick);
+// function showError(error) {
+//   switch(error.code) {
+//     case error.PERMISSION_DENIED:
+//       x.innerHTML = "User denied the request for Geolocation."
+//       break;
+//     case error.POSITION_UNAVAILABLE:
+//       x.innerHTML = "Location information is unavailable."
+//       break;
+//     case error.TIMEOUT:
+//       x.innerHTML = "The request to get user location timed out."
+//       break;
+//     case error.UNKNOWN_ERROR:
+//       x.innerHTML = "An unknown error occurred."
+//       break;
+//   }
+// }
+
+
+

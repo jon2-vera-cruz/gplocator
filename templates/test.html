@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="a"></div>
+<div id="b"></div>
+<div id="c"></div>
+<div id="d"></div>
+<div id="e"></div>
+<div id="f"></div>
+<div id="g"></div>
+
+<script>
+        var a = document.getElementById("a");
+        var b = document.getElementById("b");
+        var c = document.getElementById("c");
+        var d = document.getElementById("d");
+        var e = document.getElementById("e");
+        var f = document.getElementById("f");
+        var g = document.getElementById("g");
+
+
+            {% if clinics|length > 0 %}
+                {% for clinic in clinics %}
+                    a.innerHTML = {{ clinic.latitude }}
+                    b.innerHTML = {{ clinic.longtitude }}
+                    c.innerHTML = {{ clinic.latitude }}
+                    d.innerHTML = {{ clinic.longtitude }}
+                    f.innerHTML = {{ clinic.latitude }}
+                    g.innerHTML = {{ clinic.longtitude }}
+                    // Below doesn't work 
+                    // c.innerHTML = {{ clinic.clinicname }}
+                    // d.innerHTML = {{ clinic.address_1 }}
+                    // f.innerHTML = {{ clinic.locality }}
+                    // g.innerHTML = {{ clinic.town_district }}
+                 {% endfor %}
+            {% else %}
+                <h3 class="red-text text-darken-4 center-align">No Results Found</h3>
+            {% endif %}
+</script>
+
+<!-- Below Jinja is working if outside and all fields are printing -->
+    {% if clinics|length > 0 %}
+        <br>Start of retrieval in Jinja<br>
+        {% for clinic in clinics %}
+            <br>
+            {{ clinic.latitude }}<br>
+            {{ clinic.longtitude }}<br>
+            {{ clinic.clinicname }}<br>
+            {{ clinic.address_1 }}<br>
+            {{ clinic.locality }}<br>
+            {{ clinic.town_district }}<br>
+        {% endfor %}
+    {% else %}
+        <h3 class="red-text text-darken-4 center-align">No Results Found</h3>
+    {% endif %}
+
+
+{% endblock %}
